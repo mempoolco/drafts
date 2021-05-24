@@ -1,6 +1,6 @@
 ```
   
-  Title: Distributing the Bitcoin UTXO set over Torrent.
+  Title: Distributing the UTXO set over torrent
   Author: Guido Dassori <....>
   Comments-Summary: None yet
   Comments-URI: 
@@ -13,7 +13,7 @@
 
 #### Assumptions:
 
-- At the time of writing the UTXO set is around 4gb.
+- At the time of writing the UTXO set for Bitcoin is around 4gb.
 - Without investigating further, we assume a set of related proofs for the UTXO is 4x.
 - Today a lot of light clients relays on custodians, indexes services (electrum) or explorers.
 
