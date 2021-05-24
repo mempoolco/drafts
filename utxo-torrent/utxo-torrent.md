@@ -38,7 +38,9 @@ Sort of:
 #### Reducing fragmentation:
 
 To benefit from this proposal, a wallet must reduce the fragmentation of its utxo allocation in the index.
-The module(scriptPubKey)^1024 utxo organization must be adopted by the clients as well, by brute forcing ECDH paths.
+The module(scriptPubKey)^1024 utxo organization must be adopted by the clients as well, by brute forcing ECDH paths, "sharded scripts" from now.
+
+A sharded script is generated as follows:
 
 ```
 fragmentation_set = {0...1023} 
@@ -52,14 +54,21 @@ while 1 {
  n += 1
 }
 ```
-It's supposed that:
+
+Regarding the distribution and seedng:
 
 ```
 Needs 8 subsets = 160MB
 Shares 2:1 subsets = 320MB
 ```
-means to discard 1016 scripts on 1024, leading to slow addresses generation. 
-To improve the overall experience, a pool of sharded scripts could be generated in advance, using idle times.
+should be enable to validate the UTXO set and improve the privacy, compared to using a conventional utxo service or BIP37 bloom filter.
+
+Using a 8 over 1024 set means to discard 1016 scripts, leading to slow addresses generation. 
+Even increasing the fragmentation to 200% or 1000% doesn't seems to improve this side.
+
+Regarding privacy, isntead, increasing the seed radio, dramatically increases it, as every chunk is supposed to hold roughly 80.000 scripts at the time of writing.
+
+To address the issue, a pool of "sharded scripts" could be generated in advance, using idle times.
 
 
 #### Authoring and distribution of the UTXO set:
