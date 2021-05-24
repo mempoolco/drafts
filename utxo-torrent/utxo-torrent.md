@@ -17,13 +17,15 @@
 - Without investigating further, we assume a set of related proofs for the UTXO is 4x.
 - Today a lot of light clients relays on custodians, indexes services (electrum) or explorers.
 
-
 #### Proposal:
 
 - To split the UTXO set in 1024 chunks.
-- Organize those 1024 chunks by doing, for every chunk, a module(scriptPubKey), and put the related utxo there.
+- To organize those 1024 chunks by doing, for every chunk, a module(scriptPubKey), and put the related utxo there.
+- To use a wide adopted protocol, bittorrent, to share the chunks across public trackers. 
+- That clients consuming those torrents would share 2:1 the downloaded chunks, for privacy improvements and network health.
+- That a patch protocol is established for incremental updates.
 
-Sort of:
+~ Sort of:
 ```
 ~approx utxo size: 4GB
 ~approx proofs: x4 utxo
@@ -32,8 +34,6 @@ Sort of:
 20000 / 1024 = ~ 20MB
 ```
 
-- Share the chunks across public torrent trackers. 
-- Clients consuming those torrents would share 2:1 the downloaded chunks, for privacy improvements and network health.
 
 #### Reducing fragmentation:
 
@@ -55,13 +55,13 @@ while 1 {
 }
 ```
 
-Regarding the distribution and seedng:
+Regarding the distribution and seeding:
 
 ```
 Needs 8 subsets = 160MB
 Shares 2:1 subsets = 320MB
 ```
-should be enable to validate the UTXO set and improve the privacy, compared to using a conventional utxo service or BIP37 bloom filter.
+should be enable to validate the UTXO set and improve the privacy, compared to using a conventional utxo indexing service or BIP37 bloom filter.
 
 Using a 8 over 1024 set means to discard 1016 scripts, leading to slow addresses generation. 
 Even increasing the fragmentation to 200% or 1000% doesn't seems to improve this side.
