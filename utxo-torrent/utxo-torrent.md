@@ -22,8 +22,9 @@
 - To split the UTXO set in 1024 chunks.
 - To organize those 1024 chunks by doing, for every chunk, a module(scriptPubKey), and put the related utxo there.
 - To use a wide adopted protocol, bittorrent, to share the chunks across public trackers. 
-- That clients consuming those torrents would share 2:1 the downloaded chunks, for privacy improvements and network health.
 - That a patch protocol is established for incremental updates.
+- That clients consuming those torrents would share 2:1 the downloaded chunks, for privacy improvements and network health.
+- That clients adopting this protocol use a certain scheme for addresses generation.
 
 ~ Sort of:
 ```
@@ -61,14 +62,14 @@ Regarding the distribution and seeding:
 Needs 8 subsets = 160MB
 Shares 2:1 subsets = 320MB
 ```
-should be enable to validate the UTXO set and improve the privacy, compared to using a conventional utxo indexing service or BIP37 bloom filter.
+those figures should be enough to validate the UTXO set and improve the privacy, compared to using a conventional utxo indexing.
 
-Using a 8 over 1024 set means to discard 1016 scripts, leading to slow addresses generation. 
-Even increasing the fragmentation to 200% or 1000% doesn't seems to improve this side.
+Using a 8-on-1024 addresses subset means to discard 1016 scripts on average, leading to slow addresses generation. 
+Even increasing the defragmentation to 200% or 1000% doesn't seems to improve this side, as with a subset size of 80 a client should still discard nearly 1000 scripts.
 
-Regarding privacy, isntead, increasing the seed radio, dramatically increases it, as every chunk is supposed to hold roughly 80.000 scripts at the time of writing.
+On the privacy side, instead, increasing the seed ratio leads to a drastical improvement, as every chunk is supposed to hold roughly 80.000 scripts at the time of writing, having 8 chunks would mean to track 640.000 possible outputs.
 
-To address the issue, a pool of "sharded scripts" could be generated in advance, using idle times.
+To address the slow addresses generation issue, a pool of "sharded scripts" could be generated in advance, using idle times.
 
 
 #### Authoring and distribution of the UTXO set:
