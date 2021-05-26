@@ -49,7 +49,7 @@ n = ...
 while 1 {
  scripthash = scripthash[bip44path[n]]
  fragmentation_idx = scripthash % 1024
- if fragmentation_id in fragmentation_set {
+ if fragmentation_idx in fragmentation_set {
    break 
  }
  n += 1
