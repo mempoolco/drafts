@@ -19,28 +19,17 @@
 
 #### Proposal:
 
-- To split the UTXO set into 1024 chunks.
-- To organize those 1024 chunks by doing, for every chunk, a module(scriptPubKey), and put the related utxo there.
-- To use a wide adopted protocol, BitTorrent, to share the chunks across public trackers. 
+- To split the UTXO set into 1024 shard.
+- To organize those 1024 shard by doing, for every shard, a modulus operation `dblsha256(scriptPubKey) % shards_count`, and put the related utxo in the relative shard.
+- To use a wide adopted protocol, BitTorrent, to share the shards across public trackers. 
 - That a patch protocol is established for incremental updates.
-- That clients consuming those torrents would share 2:1 the downloaded chunks, for privacy improvements and network health.
+- That clients consuming those torrents would share 2:1 the downloaded shards, for privacy improvements and network health.
 - That clients adopting this protocol use a certain scheme for address generation.
-
-~ Sort of:
-
-```
-~approx utxo size: 4GB
-~approx proofs: x4 utxo
-
-4000 + (4*4000) = 20000MB
-20000 / 1024 = ~ 20MB
-```
-
 
 #### Reducing fragmentation:
 
 To benefit from this proposal, a wallet must reduce the fragmentation of its utxo allocation in the index.
-The module(scriptPubKey)^1024 utxo organization must be adopted by the clients as well, by brute-forcing ECDH paths, "sharded scripts" from now.
+The modulus-based utxo organization must be adopted by the clients as well, by brute-forcing ECDH paths, "sharded scripts" from now.
 
 A sharded script is generated as follows:
 
@@ -68,7 +57,7 @@ those figures should be enough to validate the UTXO set and improve the privacy,
 Using an 8-on-1024 addresses subset means discarding 1016 scripts on average, leading to slow addresses generation. 
 Even increasing the defragmentation to 200% or 1000% doesn't seem to improve this side, as with a subset size of 80 a client should still discard nearly 1000 scripts.
 
-On the privacy side, instead, increasing the seed ratio leads to a drastic improvement, as every chunk is supposed to hold roughly 80.000 scripts at the time of writing, having 8 chunks would mean tracking 640.000 possible outputs.
+On the privacy side, instead, increasing the seed ratio leads to a drastic improvement, as every shard is supposed to hold roughly 80.000 scripts at the time of writing, having 8 shards would mean tracking 640.000 possible outputs.
 
 To address the slow addresses generation issue, a pool of "sharded scripts" could be generated in advance, using idle times.
 
@@ -80,9 +69,9 @@ BIP-37 is slowly going to deprecation. In opposition to the current centralizati
 
 - Anyone could author a UTXO set and sign it with an ECC signature.
 - Anyone could verify the set using a full node.
-- All the legit sets chunks authored at the same blockhash, must hash in the same way.
+- All the legit sets shards authored at the same blockhash, must hash in the same way.
 - Some metadata could be added to the set, with no hash invalidation, but committed to the signature.
-- The chunks hash, put into a Merkle tree and committed to the blockhash at which they are authored, leads to fast verification.
+- The shards hash, put into a Merkle tree and committed to the blockhash at which they are authored, leads to fast verification.
 - Incremental updates are possible by patch files.
 - Various methods, OP return, 0fee txs unlikely to be mined, DNS seeding w/ DNSSEC, could be used to obtain magnet links of the utxo set.
 
