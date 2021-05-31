@@ -8,7 +8,7 @@
   Type: 
   Created: 2021-05-24
   License: CC0-1.0
-  ```
+```
 
 
 #### Assumptions:
@@ -27,6 +27,7 @@
 - That clients adopting this protocol use a certain scheme for address generation.
 
 ~ Sort of:
+
 ```
 ~approx utxo size: 4GB
 ~approx proofs: x4 utxo
